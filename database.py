@@ -40,8 +40,17 @@ async def alterar_saldo(usuario,quantidade):
 
     usuarios.update_one(filtro,relacao)
 
+async def remover_usuario(usuario):
+    filtro = {"discord_id": usuario.id}
+    resultado = usuarios.delete_one(filtro)
+    
+    if resultado.deleted_count == 1:
+        return True  
+    else:
+        return False  
+
 async def ranking_usuarios():
-    # Ordena os usuários pelo número de moedas em ordem decrescente
+   
     usuarios_ranking = usuarios.find().sort("moedas", pymongo.DESCENDING)
 
     ranking = []
