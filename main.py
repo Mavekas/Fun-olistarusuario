@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from discord import app_commands
 import os
 
-from database import novo_usuario, checar_saldo, alterar_saldo, remover_usuario
+from database import * 
 
 load_dotenv()
 
