@@ -7,7 +7,6 @@ from database import *
 
 load_dotenv()
 
-
 class client(discord.Client):
     def __init__(self):
         super().__init__(intents=discord.Intents.default())
@@ -43,6 +42,14 @@ async def pagamento(interaction: discord.Interaction, usuario: discord.User, val
     else:
         await interaction.response.send_message(f"Você não tem saldo")
 
+@tree.command(name='remover_usuario', description='Remove a user from the database')
+async def remover_usuario(interaction: discord.Interaction, usuario: discord.User):
+    success = await remover_usuario(usuario)
+    if success:
+        await interaction.response.send_message(f"{usuario.mention} has been removed from the database.")
+    else:
+        await interaction.response.send_message(f"Failed to remove {usuario.mention} from the database.")
+
 @tree.command(name='ranking', description='Veja o ranking de usuários')
 async def exibir_ranking(interaction: discord.Interaction):
     ranking = await ranking_usuarios()
@@ -54,7 +61,6 @@ async def exibir_ranking(interaction: discord.Interaction):
         await interaction.response.send_message(message)
     else:
         await interaction.response.send_message("Não há usuários no ranking ainda.")
-
 
 
 aclient.run(os.getenv("BOT_TOKEN"))
