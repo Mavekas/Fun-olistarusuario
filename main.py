@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from discord import app_commands
 import os
 
-from database import *
+from database import novo_usuario, checar_saldo, alterar_saldo, remover_usuario
 
 load_dotenv()
 
@@ -43,14 +43,13 @@ async def pagamento(interaction: discord.Interaction, usuario: discord.User, val
     else:
         await interaction.response.send_message(f"Você não tem saldo")
 
-@tree.command(name='listar_usuarios', description='Lista todos os usuários e seus saldos')
-async def listar_usuarios_cmd(interaction: discord.Interaction):
-    usuarios_lista = await listar_usuarios()
-    if usuarios_lista:
-        mensagem = "Lista de usuários e seus saldos:\n"
-        mensagem += "\n".join([f"<@{u['discord_id']}>: {u['moedas']} moedas" for u in usuarios_lista])
+@tree.command(name='remover', description='Remove um usuario do banco de dados')
+async def remover(interaction: discord.Interaction, usuario: discord.User):
+    resultado = await remover_usuario(usuario)
+    if resultado:
+        await interaction.response.send_message(f"O usuário {usuario.mention} foi removido com sucesso.")
     else:
-        mensagem = "Não foi possível obter a lista de usuários."
-    await interaction.response.send_message(mensagem)
+        await interaction.response.send_message(f"O usuário {usuario.mention} não foi encontrado no banco de dados.")
+
 
 aclient.run(os.getenv("BOT_TOKEN"))
