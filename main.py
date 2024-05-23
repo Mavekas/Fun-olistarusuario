@@ -48,7 +48,7 @@ async def listar_usuarios_cmd(interaction: discord.Interaction):
     usuarios_lista = await listar_usuarios()
     if usuarios_lista:
         mensagem = "Lista de usuários e seus saldos:\n"
-        mensagem += "\n".join([f"{u['discord_id']}: {u['moedas']} moedas" for u in usuarios_lista])
+        mensagem += "\n".join([f"<@{u['discord_id']}>: {u['moedas']} moedas" for u in usuarios_lista])
     else:
         mensagem = "Não foi possível obter a lista de usuários."
     await interaction.response.send_message(mensagem)
