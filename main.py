@@ -43,13 +43,18 @@ async def pagamento(interaction: discord.Interaction, usuario: discord.User, val
     else:
         await interaction.response.send_message(f"Você não tem saldo")
 
-@tree.command(name='remover', description='Remove um usuario do banco de dados')
-async def remover(interaction: discord.Interaction, usuario: discord.User):
-    resultado = await remover_usuario(usuario)
-    if resultado:
-        await interaction.response.send_message(f"O usuário {usuario.mention} foi removido com sucesso.")
+@tree.command(name='ranking', description='Veja o ranking de usuários')
+async def exibir_ranking(interaction: discord.Interaction):
+    ranking = await ranking_usuarios()
+    if ranking:
+        message = "```\nPosição | Usuário | Moedas\n"
+        for entry in ranking:
+            message += f"{entry['posicao']} | {entry['discord_id']} | {entry['moedas']}\n"
+        message += "```"
+        await interaction.response.send_message(message)
     else:
-        await interaction.response.send_message(f"O usuário {usuario.mention} não foi encontrado no banco de dados.")
+        await interaction.response.send_message("Não há usuários no ranking ainda.")
+
 
 
 aclient.run(os.getenv("BOT_TOKEN"))
