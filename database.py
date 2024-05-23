@@ -50,8 +50,8 @@ async def alterar_saldo(usuario, quantidade):
 # Função para listar todos os usuários
 async def listar_usuarios():
     try:
-        usuarios_lista = await usuarios.find().to_list(length=None)
-        return [{"discord_id": u["discord_id"], "moedas": u["moedas"]} for u in usuarios_lista]
+        usuarios_lista = await usuarios.find()
+        return [{"discord_id": u["discord_id"], "moedas": u["moedas"]} for u in usuarios_lista.to_list(length=None)]
     except Exception as e:
         logger.error(f"Erro ao listar usuários: {e}")
         return []
